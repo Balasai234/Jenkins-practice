@@ -14,6 +14,11 @@ pipeline {
                     node app.js
                 '''
             }
+        stage('Approval for QA') {
+            steps {
+                input message: "Dev passed. Approve deployment to QA?",
+                      ok: "Deploy to QA"
+            }
         }
 
         stage('QA') {
