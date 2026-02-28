@@ -1,34 +1,59 @@
 pipeline {
-    agent { label 'AGENT-1' }
+    agent { label 'agent1' }
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+    environment {
+        IMAGE_NAME = "env-drift-app"
+        IMAGE_TAG  = "1.0.${BUILD_NUMBER}"
+    }
 
     stages {
 
-        stage('Dev') {
+        stage('Build Image') {
+            steps {
+                sh '''
+                    docker build -t $IMAGE_NAME:$IMAGE_TAG .
+                '''
+            }
+        }
+
+        stage('Dev Deployment') {
             environment {
                 DB_URL = credentials('db-url-dev')
                 APP_ENV = "dev"
             }
             steps {
-                echo "Running in DEV"
-                sh 'node app.js'
+                sh '''
+                    docker run --rm \
+                    -e DB_URL=$DB_URL \
+                    -e APP_ENV=$APP_ENV \
+                    $IMAGE_NAME:$IMAGE_TAG
+                '''
             }
         }
 
         stage('Approval for QA') {
             steps {
-                input message: "Dev passed. Approve deployment to QA?",
-                      ok: "Deploy to QA"
+                input message: "Approve QA Deployment?",
+                      ok: "Deploy"
             }
         }
 
-        stage('QA') {
+        stage('QA Deployment') {
             environment {
                 DB_URL = credentials('db-url-qa')
                 APP_ENV = "qa"
             }
             steps {
-                echo "Running in QA"
-                sh 'node app.js'
+                sh '''
+                    docker run --rm \
+                    -e DB_URL=$DB_URL \
+                    -e APP_ENV=$APP_ENV \
+                    $IMAGE_NAME:$IMAGE_TAG
+                '''
             }
         }
     }
