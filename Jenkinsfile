@@ -15,6 +15,8 @@ pipeline {
         stage('Build Image') {
             steps {
                 sh '''
+                    echo "starting slow build"
+                    sleep 20
                     docker build -t $IMAGE_NAME:$IMAGE_TAG .
                 '''
             }
