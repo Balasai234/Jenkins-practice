@@ -1,12 +1,16 @@
 pipeline {
     agent { label 'AGENT-1' }
-
+    environment{
+        DB_URL=credentials('db-url')
+        APP_ENV="dev"
+    }
     stages {
         stage('Run App') {
             steps {
-                sh 'hostname'
-                sh 'node -v'
-                sh 'node app.js'
+                sh '''
+                    echo "Environment: $APP_ENV"
+                    node app.js
+                '''
             }
         }
     }
