@@ -1,14 +1,12 @@
 pipeline {
-    agent any
+    agent { label 'agent1' }
 
     stages {
-        stage('Debug') {
+        stage('Run App') {
             steps {
-                sh 'whoami'
-                sh 'echo $PATH'
-                sh 'ls -l /usr/bin/node'
-                sh '/usr/bin/node -v'
+                sh 'hostname'
                 sh 'node -v'
+                sh 'node app.js'
             }
         }
     }
