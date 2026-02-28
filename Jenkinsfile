@@ -9,11 +9,11 @@ pipeline {
                 APP_ENV = "dev"
             }
             steps {
-                sh '''
-                    echo "Running in DEV"
-                    node app.js
-                '''
+                echo "Running in DEV"
+                sh 'node app.js'
             }
+        }
+
         stage('Approval for QA') {
             steps {
                 input message: "Dev passed. Approve deployment to QA?",
@@ -27,10 +27,8 @@ pipeline {
                 APP_ENV = "qa"
             }
             steps {
-                sh '''
-                    echo "Running in QA"
-                    node app.js
-                '''
+                echo "Running in QA"
+                sh 'node app.js'
             }
         }
     }
