@@ -2,15 +2,13 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Debug') {
             steps {
-                echo "Code pulled from GitHub"
-            }
-        }
-
-        stage('Run App') {
-            steps {
-                sh 'node app.js'
+                sh 'whoami'
+                sh 'echo $PATH'
+                sh 'ls -l /usr/bin/node'
+                sh '/usr/bin/node -v'
+                sh 'node -v'
             }
         }
     }
