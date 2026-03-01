@@ -11,6 +11,14 @@ pipeline {
     }
 
     stages {
+        stage('Security Scan') {
+    steps {
+        sh '''
+            npm install
+            npm audit --audit-level=high
+        '''
+    }
+}
 
         stage('Build Image') {
             steps {
