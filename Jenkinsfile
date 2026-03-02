@@ -1,3 +1,4 @@
+/*
 pipeline {
     agent { label 'AGENT-1' }
 
@@ -67,3 +68,8 @@ pipeline {
         }
     }
 }
+*/
+
+
+@Library('shared-lib') _
+nodePipeline(appName: 'env-drift-app')
