@@ -70,6 +70,6 @@ pipeline {
 }
 */
 
-
+echo "triggering from shared"
 @Library('shared-lib') _
 nodePipeline(appName: 'env-drift-app')
